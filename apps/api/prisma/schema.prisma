@@ -1,0 +1,190 @@
+// This is your Prisma schema file
+// It tells the database what tables and fields we need
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users table - stores all user accounts
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("user") // user, admin, support
+  
+  // Profile info
+  name        String?
+  phoneNumber String?
+  emailVerified Boolean @default(false)
+  
+  // Security
+  twoFactorSecret String?
+  resetToken String?
+  resetTokenExpiry DateTime?
+  
+  // Admin role
+  adminRole String? // super_admin, compliance, finance, support
+  
+  // KYC fields
+  kycStatus String @default("unverified") // unverified, pending, verified, rejected
+  kycLevel String? // tier1, tier2
+  kycSubmittedAt DateTime?
+  kycVerifiedAt DateTime?
+  kycRejectionReason String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  sessions Session[]
+  wallets Wallet[]
+  kycDocuments KycDocument[]
+  trades Trade[]
+}
+
+// Sessions table - stores login sessions
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  refreshToken String   @unique
+  deviceInfo   String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  
+  // Relation to user
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Wallets - each user has multiple wallets
+model Wallet {
+  id       String @id @default(cuid())
+  userId   String
+  type     String // fiat, gold, silver, bpc
+  currency String // USD, grams
+  balance  Float  @default(0) // current balance
+  status   String @default("active") // active, frozen
+  
+  createdAt DateTime @default(now())
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactionsFrom Transaction[] @relation("FromWallet")
+  transactionsTo   Transaction[] @relation("ToWallet")
+}
+
+// Transactions - records all money movements
+model Transaction {
+  id          String   @id @default(cuid())
+  fromWalletId String
+  toWalletId   String
+  amount      Float
+  type        String   // transfer, deposit, fee
+  status      String   @default("completed") // pending, completed, failed
+  description String?
+  
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  fromWallet Wallet @relation("FromWallet", fields: [fromWalletId], references: [id])
+  toWallet   Wallet @relation("ToWallet", fields: [toWalletId], references: [id])
+}
+
+// Audit logs - records all important admin actions
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  metadata  Json?
+  ipAddress String?
+  
+  requiresApproval Boolean @default(false)
+  approvedBy String?
+  approvedAt DateTime?
+  
+  createdAt DateTime @default(now())
+}
+
+// KYC documents - stores user verification documents
+model KycDocument {
+  id           String   @id @default(cuid())
+  userId       String
+  documentType String   // id_proof, address_proof, selfie
+  fileName     String
+  fileData     String   @db.Text // We store file as base64 string (simple approach)
+  status       String   @default("pending") // pending, approved, rejected
+  
+  rejectionReason String?
+  reviewedBy      String?
+  reviewedAt      DateTime?
+  
+  createdAt    DateTime @default(now())
+  
+  // Relation
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Asset prices - stores current gold/silver prices
+model AssetPrice {
+  id         String   @id @default(cuid())
+  asset      String   @unique // gold, silver
+  priceUsd   Float    // price per gram in USD
+  updatedAt  DateTime @default(now()) @updatedAt
+}
+
+// Trades - records all buy/sell trades
+model Trade {
+  id            String   @id @default(cuid())
+  userId        String
+  tradeType     String   // buy, sell
+  asset         String   // gold, silver
+  amountGrams   Float    // how many grams bought/sold
+  pricePerGram  Float    // price at time of trade
+  totalUsd      Float    // total cost in USD
+  status        String   @default("completed") // pending, completed, failed
+  
+  createdAt     DateTime @default(now())
+  
+  // Relation
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Notifications - stores all user notifications
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String   // notification title
+  message   String   // notification message
+  type      String   // trade, transfer, kyc, security, alert, system
+  isRead    Boolean  @default(false)
+  metadata  Json?    // extra data like transaction id, trade id, etc
+  
+  createdAt DateTime @default(now())
+}
+
+// Price Alerts - user set price targets for gold/silver
+model PriceAlert {
+  id         String   @id @default(cuid())
+  userId     String
+  asset      String   // gold, silver
+  targetPrice Float   // price per gram user wants to be notified at
+  condition  String   // above, below
+  isActive   Boolean  @default(true)
+  triggered  Boolean  @default(false)
+  triggeredAt DateTime?
+  
+  createdAt  DateTime @default(now())
+}
+
+// Waitlist - stores emails from landing page
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}
