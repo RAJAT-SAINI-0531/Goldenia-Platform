@@ -59,6 +59,16 @@ To test payments:
 
 ## Note:
 ```bash
+# Admin Account (for admin portal access)
 Admin Email: admin@goldenia.com
 Password: admin@123
+
+# Test User Accounts (each has $1000 pre-loaded)
+User 1: test2@gmail.com / test2@123
+User 2: test3@gmail.com / test3@123
+User 3: test4@gmail.com / test4@123
+
+To create these test users automatically, run:
+cd apps/api
+npx ts-node scripts/create-test-users.ts
 ```
