@@ -6,7 +6,7 @@ services:
     plan: free
     branch: main
     rootDirectory: apps/api
-    buildCommand: npm install --production=false && npx prisma generate && npm run build
+    buildCommand: NODE_ENV=development npm install && npx prisma generate && npm run build
     startCommand: npm start
     envVars:
       - key: DATABASE_URL
