@@ -42,7 +42,7 @@ export default function TradePage() {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       router.push('/login');
-      return;
+      return; // Keep loading=true to prevent rendering
     }
 
     try {
@@ -53,6 +53,12 @@ export default function TradePage() {
       if (pricesRes.ok) {
         const data = await pricesRes.json();
         setPrices(data.prices);
+      } else {
+        // Token might be invalid
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        router.push('/login');
+        return; // Keep loading=true
       }
 
       // Get my trades
