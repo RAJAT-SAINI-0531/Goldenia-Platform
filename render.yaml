@@ -17,8 +17,6 @@ services:
         generateValue: true
       - key: JWT_REFRESH_SECRET
         generateValue: true
-      - key: NODE_ENV
-        value: production
       - key: PORT
         value: 4000
       - key: STRIPE_SECRET_KEY
