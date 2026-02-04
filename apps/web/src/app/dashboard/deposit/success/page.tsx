@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 function DepositSuccessContent() {
   const router = useRouter();
@@ -32,7 +33,7 @@ function DepositSuccessContent() {
         return;
       }
 
-      const response = await fetch(`http://localhost:4000/api/v1/payments/session/${sessionId}`, {
+      const response = await fetch(`${API_BASE_URL}/payments/session/${sessionId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

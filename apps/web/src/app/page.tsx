@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function LandingPage() {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:4000/api/v1/waitlist', {
+      const response = await fetch(`${API_BASE_URL}/waitlist`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function ChangePasswordPage() {
         return;
       }
 
-      const response = await fetch('http://localhost:4000/api/v1/auth/change-password', {
+      const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

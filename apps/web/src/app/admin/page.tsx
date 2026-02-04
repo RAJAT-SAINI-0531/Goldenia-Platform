@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function AdminDashboardPage() {
       }
 
       // Get current user to check if admin
-      const userRes = await fetch('http://localhost:4000/api/v1/auth/me', {
+      const userRes = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -47,7 +48,7 @@ export default function AdminDashboardPage() {
       }
 
       // Fetch admin stats
-      const statsRes = await fetch('http://localhost:4000/api/v1/admin/stats', {
+      const statsRes = await fetch(`${API_BASE_URL}/admin/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -59,7 +60,7 @@ export default function AdminDashboardPage() {
       }
 
       // Fetch users (first page)
-      const usersRes = await fetch('http://localhost:4000/api/v1/admin/users?page=1&limit=10', {
+      const usersRes = await fetch(`${API_BASE_URL}/admin/users?page=1&limit=10`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -71,7 +72,7 @@ export default function AdminDashboardPage() {
       }
 
       // Fetch recent transactions (first page)
-      const txRes = await fetch('http://localhost:4000/api/v1/admin/transactions?page=1&limit=10', {
+      const txRes = await fetch(`${API_BASE_URL}/admin/transactions?page=1&limit=10`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

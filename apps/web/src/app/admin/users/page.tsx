@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function AdminUsersPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function AdminUsersPage() {
         return;
       }
 
-      const response = await fetch(`http://localhost:4000/api/v1/admin/users?page=${page}&limit=20`, {
+      const response = await fetch(`${API_BASE_URL}/admin/users?page=${page}&limit=20`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

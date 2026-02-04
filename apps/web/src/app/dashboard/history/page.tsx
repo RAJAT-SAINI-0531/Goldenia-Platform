@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 interface Transaction {
   id: string;
@@ -44,7 +45,7 @@ export default function AllTransactionsPage() {
 
     try {
       // Build query params
-      let url = 'http://localhost:4000/api/v1/wallet/transactions/search?';
+      let url = `${API_BASE_URL}/wallet/transactions/search?`;
       if (filterType) url += `type=${filterType}&`;
       if (searchText) url += `searchText=${searchText}&`;
 
@@ -67,7 +68,7 @@ export default function AllTransactionsPage() {
     const token = localStorage.getItem('accessToken');
     
     try {
-      const res = await fetch('http://localhost:4000/api/v1/wallet/transactions/export', {
+      const res = await fetch(`${API_BASE_URL}/wallet/transactions/export`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

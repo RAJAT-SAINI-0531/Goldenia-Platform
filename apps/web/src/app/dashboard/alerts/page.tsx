@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 // Page for managing price alerts
 export default function AlertsPage() {
@@ -28,7 +29,7 @@ export default function AlertsPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/alerts', {
+      const res = await fetch(`${API_BASE_URL}/alerts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -47,7 +48,7 @@ export default function AlertsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/trading/prices', {
+      const res = await fetch(`${API_BASE_URL}/trading/prices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -73,7 +74,7 @@ export default function AlertsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/alerts', {
+      const res = await fetch(`${API_BASE_URL}/alerts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ export default function AlertsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/alerts/${alertId}`, {
+      const res = await fetch(`${API_BASE_URL}/alerts/${alertId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

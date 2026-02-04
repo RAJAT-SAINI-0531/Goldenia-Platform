@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function DepositPage() {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function DepositPage() {
       }
 
       // Call API to create checkout session
-      const response = await fetch('http://localhost:4000/api/v1/payments/create-checkout', {
+      const response = await fetch(`${API_BASE_URL}/payments/create-checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

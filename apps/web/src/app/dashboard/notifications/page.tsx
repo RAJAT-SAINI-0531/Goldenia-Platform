@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 // Simple notification page showing all user notifications
 export default function NotificationsPage() {
@@ -21,7 +22,7 @@ export default function NotificationsPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/notifications', {
+      const res = await fetch(`${API_BASE_URL}/notifications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -40,7 +41,7 @@ export default function NotificationsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/notifications/${notificationId}/read`, {
+      const res = await fetch(`${API_BASE_URL}/notifications/${notificationId}/read`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -60,7 +61,7 @@ export default function NotificationsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/notifications/mark-all-read', {
+      const res = await fetch(`${API_BASE_URL}/notifications/mark-all-read`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -78,7 +79,7 @@ export default function NotificationsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch(`http://localhost:4000/api/v1/notifications/${notificationId}`, {
+      const res = await fetch(`${API_BASE_URL}/notifications/${notificationId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

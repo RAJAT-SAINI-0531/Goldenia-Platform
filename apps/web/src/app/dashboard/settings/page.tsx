@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 // Simple settings page for user account
 export default function SettingsPage() {
@@ -26,7 +27,7 @@ export default function SettingsPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/me', {
+      const res = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -57,7 +58,7 @@ export default function SettingsPage() {
     const token = localStorage.getItem('accessToken');
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/auth/change-password', {
+      const res = await fetch(`${API_BASE_URL}/auth/change-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const response = await fetch('http://localhost:4000/api/v1/auth/me', {
+      const response = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -69,7 +70,7 @@ export default function ProfilePage() {
     try {
       const token = localStorage.getItem('accessToken');
 
-      const response = await fetch('http://localhost:4000/api/v1/auth/profile', {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

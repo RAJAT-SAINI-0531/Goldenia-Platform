@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 interface AssetPrice {
   asset: string;
@@ -29,7 +30,7 @@ export default function AdminPricesPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/trading/prices', {
+      const res = await fetch(`${API_BASE_URL}/trading/prices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -60,7 +61,7 @@ export default function AdminPricesPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/trading/admin/update-price', {
+      const res = await fetch(`${API_BASE_URL}/trading/admin/update-price`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

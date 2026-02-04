@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 interface AssetPrice {
   asset: string;
@@ -46,7 +47,7 @@ export default function TradePage() {
 
     try {
       // Get prices
-      const pricesRes = await fetch('http://localhost:4000/api/v1/trading/prices', {
+      const pricesRes = await fetch(`${API_BASE_URL}/trading/prices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (pricesRes.ok) {
@@ -55,7 +56,7 @@ export default function TradePage() {
       }
 
       // Get my trades
-      const tradesRes = await fetch('http://localhost:4000/api/v1/trading/my-trades', {
+      const tradesRes = await fetch(`${API_BASE_URL}/trading/my-trades`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (tradesRes.ok) {
@@ -85,7 +86,7 @@ export default function TradePage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/trading/buy', {
+      const res = await fetch(`${API_BASE_URL}/trading/buy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +126,7 @@ export default function TradePage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/trading/sell', {
+      const res = await fetch(`${API_BASE_URL}/trading/sell`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

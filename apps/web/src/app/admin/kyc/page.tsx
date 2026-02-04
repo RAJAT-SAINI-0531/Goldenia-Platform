@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE_URL } from '@/lib/api-client';
 
 interface KycRequest {
   id: string;
@@ -33,7 +34,7 @@ export default function AdminKycPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:4000/api/v1/admin/kyc-requests', {
+      const res = await fetch(`${API_BASE_URL}/admin/kyc-requests`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -56,7 +57,7 @@ export default function AdminKycPage() {
     const token = localStorage.getItem('accessToken');
     
     try {
-      const res = await fetch('http://localhost:4000/api/v1/kyc/admin/approve', {
+      const res = await fetch(`${API_BASE_URL}/kyc/admin/approve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ export default function AdminKycPage() {
     const token = localStorage.getItem('accessToken');
     
     try {
-      const res = await fetch('http://localhost:4000/api/v1/kyc/admin/reject', {
+      const res = await fetch(`${API_BASE_URL}/kyc/admin/reject`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
