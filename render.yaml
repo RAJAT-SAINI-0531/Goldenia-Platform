@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: goldenia-api
+    runtime: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd apps/api && npm install && npx prisma generate
+    startCommand: cd apps/api && npm start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
