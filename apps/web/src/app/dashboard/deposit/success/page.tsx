@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function DepositSuccessPage() {
+function DepositSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -154,5 +154,13 @@ export default function DepositSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function DepositSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <DepositSuccessContent />
+    </Suspense>
   );
 }
