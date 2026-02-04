@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { signup, login, requestPasswordReset, resetPassword, getUserById, updateUserProfile, changePassword } from '../modules/auth/auth.service';
+import { signup, login, requestPasswordReset, resetPassword, updateUserProfile, changePassword } from '../modules/auth/auth.service';
 import { verifyRefreshToken, createAccessToken, deleteRefreshToken } from '../modules/auth/token.service';
 import { rateLimitMiddleware } from '../middleware/rateLimit';
 import { validateBody } from '../middleware/validator';

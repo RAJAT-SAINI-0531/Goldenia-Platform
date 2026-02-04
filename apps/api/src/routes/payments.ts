@@ -1,14 +1,13 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, raw } from 'express';
 import { authMiddleware } from '../middleware/auth.middleware';
 import { paymentService } from '../modules/payments/payment.service';
 import Stripe from 'stripe';
-import express from 'express';
 
 const router = Router();
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2026-01-28.clover'
 });
 
 // POST /api/v1/payments/create-checkout
@@ -47,7 +46,7 @@ router.post('/create-checkout', authMiddleware, async (req: Request, res: Respon
 // Stripe webhook - receives payment confirmation
 // This endpoint is called by Stripe, not by our frontend
 // Note: Webhook verification requires raw body, so we need special handling
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req: Request, res: Response) => {
+router.post('/webhook', raw({ type: 'application/json' }), async (req: Request, res: Response) => {
   // Get the signature from Stripe
   const sig = req.headers['stripe-signature'] as string;
 
@@ -67,7 +66,7 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req: R
 
   // Handle the event
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const session = event.data.object;
     
     try {
       // Process the payment

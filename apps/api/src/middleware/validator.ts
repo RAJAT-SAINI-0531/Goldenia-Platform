@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { ZodSchema } from 'zod';
 
 // Middleware to validate request body against a Zod schema
-export function validateBody(schema: ZodSchema) {
+// Using any type to support both Zod v3 (shared) and local schemas
+export function validateBody(schema: any) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       // Validate the request body

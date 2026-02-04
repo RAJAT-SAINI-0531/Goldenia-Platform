@@ -3,7 +3,7 @@ import prisma from '../../config/database';
 
 // Initialize Stripe with our secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-12-18.acacia'
+  apiVersion: '2026-01-28.clover'
 });
 
 // Simple payment service
@@ -73,16 +73,16 @@ export const paymentService = {
 
     const userId = session.metadata?.userId;
     const walletId = session.metadata?.walletId;
-    const amount = parseFloat(session.metadata?.amount || '0');
+    const amount = Number.parseFloat(session.metadata?.amount || '0');
 
     if (!userId || !walletId || !amount) {
       throw new Error('Invalid session metadata');
     }
 
-    // Check if we already processed this payment
+    // Check if we already processed this payment (using description)
     const existingTransaction = await prisma.transaction.findFirst({
       where: {
-        reference: sessionId
+        description: { contains: sessionId }
       }
     });
 
@@ -107,11 +107,9 @@ export const paymentService = {
         fromWalletId: walletId, // same wallet for deposits
         toWalletId: walletId,
         amount: amount,
-        currency: 'USD',
         type: 'deposit',
         status: 'completed',
-        reference: sessionId,
-        description: `Stripe deposit: $${amount}`
+        description: `Stripe deposit: $${amount} (Session: ${sessionId})`
       }
     });
 
