@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@goldenia/shared": "workspace:*",
     "@prisma/client": "^5.8.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -22,13 +23,13 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
     "@types/jest": "^29.5.11",
-    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.10.6",
     "@types/supertest": "^6.0.2",
-    "@types/uuid": "^9.0.7",
+    "@types/uuid": "^9.0.8",
     "jest": "^29.7.0",
     "prisma": "^5.8.1",
     "supertest": "^6.3.3",
