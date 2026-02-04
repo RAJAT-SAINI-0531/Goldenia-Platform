@@ -39,6 +39,18 @@ export default function TradePage() {
 
   // Fetch prices and trades
   const fetchData = async () => {
+    try {
+      // Get prices (PUBLIC - no auth needed)
+      const pricesRes = await fetch(`${API_BASE_URL}/trading/prices`);
+      if (pricesRes.ok) {
+        const data = await pricesRes.json();
+        setPrices(data.prices);
+      }
+    } catch (error) {
+      console.error('Failed to fetch prices:', error);
+    }
+
+    // Check authentication for trades
     const token = localStorage.getItem('accessToken');
     if (!token) {
       router.push('/login');
@@ -46,13 +58,13 @@ export default function TradePage() {
     }
 
     try {
-      // Get prices
-      const pricesRes = await fetch(`${API_BASE_URL}/trading/prices`, {
+      // Get my trades (requires auth)
+      const tradesRes = await fetch(`${API_BASE_URL}/trading/my-trades`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      if (pricesRes.ok) {
-        const data = await pricesRes.json();
-        setPrices(data.prices);
+      if (tradesRes.ok) {
+        const data = await tradesRes.json();
+        setTrades(data.trades);
       } else {
         // Token might be invalid
         localStorage.removeItem('accessToken');
@@ -60,14 +72,6 @@ export default function TradePage() {
         router.push('/login');
         return; // Keep loading=true
       }
-
-      // Get my trades
-      const tradesRes = await fetch(`${API_BASE_URL}/trading/my-trades`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (tradesRes.ok) {
-        const data = await tradesRes.json();
-        setTrades(data.trades);
       }
     } catch (error) {
       console.error('Failed to fetch data:', error);
