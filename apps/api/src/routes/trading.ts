@@ -5,11 +5,11 @@ import { z } from 'zod';
 
 const router = Router();
 
-// All trading routes need login
+// Public routes - no auth required
 
 // GET /api/v1/trading/prices
-// Get current gold and silver prices
-router.get('/prices', authMiddleware, async (req: Request, res: Response) => {
+// Get current gold and silver prices (PUBLIC - no auth needed)
+router.get('/prices', async (req: Request, res: Response) => {
   try {
     const prices = await tradingService.getCurrentPrices();
     
@@ -24,6 +24,8 @@ router.get('/prices', authMiddleware, async (req: Request, res: Response) => {
     });
   }
 });
+
+// Protected routes - require authentication
 
 // POST /api/v1/trading/buy
 // Buy gold or silver
