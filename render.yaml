@@ -6,9 +6,8 @@ services:
     plan: free
     branch: main
     rootDirectory: apps/api
-    buildCommand: npm install && npx prisma generate --schema apps/api/prisma/schema.prisma && npm run build --workspace=@goldenia/shared && npm run build --workspace=@goldenia/api
-    startCommand: node apps/api/dist/server.js
-
+    buildCommand: NODE_ENV=development npm install && npx prisma generate && npm run build
+    startCommand: npm start
     envVars:
       - key: DATABASE_URL
         sync: false
